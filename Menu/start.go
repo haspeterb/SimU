@@ -7,7 +7,7 @@ import (
 /// Constants for class types
 //TODO: Relocate these probably into a class structure
 const (
-	UNKNOWN = iota
+	UNKNOWN = int(iota)
 	WARRIOR
 	ROGUE
 	ARCHER
@@ -15,6 +15,19 @@ const (
 	MAGE
 	MAX_CLASSES
 )
+
+type sSupportedClasses struct {
+	Classes     [MAX_CLASSES]sClassTypes
+	Initialized bool
+}
+
+func (s *sSupportedClasses) init() {
+	s.Initialized = true
+}
+
+func (s *sSupportedClasses) isInit() (retval bool) {
+	return s.Initialized
+}
 
 type sClassTypes struct {
 	Type int
@@ -34,11 +47,11 @@ type sCharacter struct {
 	Class sClassTypes
 }
 
-func getClassType(classType int) (class sClassTypes){
+func getClassType(classType int) (class sClassTypes) {
 	if classType > UNKNOWN && classType < MAX_CLASSES {
 		class.Type = classType
 		// TODO: Could clean this up to have a single assignment to s.Name
-        switch class.Type {
+		switch class.Type {
 		case WARRIOR:
 			class.Name = "Warrior"
 		case ROGUE:
@@ -50,11 +63,11 @@ func getClassType(classType int) (class sClassTypes){
 		case MAGE:
 			class.Name = "Mage"
 		default:
-	        fmt.Println("Failure to select appropriate class!")
+			fmt.Println("Failure to select appropriate class!")
 			class.Name = "Unknown"
 		}
 	}
-    return
+	return
 }
 
 func (s *sCharacter) Print() {
@@ -62,7 +75,7 @@ func (s *sCharacter) Print() {
 	fmt.Println("Character:")
 	fmt.Printf("Name: %s\n", s.Name)
 	fmt.Printf("Age: %d\n", s.Age)
-    fmt.Printf("Type: %s\n", s.Class.Name)
+	fmt.Printf("Type: %s\n", s.Class.Name)
 }
 
 func createCharacter() *sCharacter {
